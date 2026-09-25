@@ -1,0 +1,8 @@
+database/*.sqlite
+database/*.sqlite-wal
+database/*.sqlite-shm
+.env
+.DS_Store
+/vendor/
+/node_modules/
+config.local.php

@@ -1,0 +1,19 @@
+# SIAKAD Sekolah — dipakai bila SELURUH folder aplikasi diletakkan di document root
+# (mis. public_html di cPanel). Semua permintaan diteruskan ke folder public/,
+# sedangkan kode, konfigurasi, dan database tidak dapat diakses dari browser.
+
+Options -Indexes
+DirectoryIndex index.php
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Blokir folder & berkas internal
+    RewriteRule ^(app|database|tests|docs)(/|$) - [F,L]
+    RewriteRule ^(config(\.local)?(\.example)?\.php|\.git|\.env|\.gitignore)  - [F,L,NC]
+    RewriteRule \.(sql|sqlite|sqlite-wal|sqlite-shm|md|sh|log)$ - [F,L,NC]
+
+    # Teruskan semua permintaan lain ke public/ (URL di browser tetap bersih)
+    RewriteCond %{REQUEST_URI} !/public/
+    RewriteRule ^(.*)$ public/$1 [L]
+</IfModule>

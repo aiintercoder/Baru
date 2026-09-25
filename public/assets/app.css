@@ -1,5 +1,5 @@
 body { background: #f4f6fb; }
-.sidebar { width: 250px; min-height: calc(100vh - 56px); }
+.sidebar { width: 250px; flex-shrink: 0; min-height: calc(100vh - 56px); }
 @media (min-width: 992px) {
     .sidebar { position: sticky; top: 56px; height: calc(100vh - 56px); overflow-y: auto; }
 }

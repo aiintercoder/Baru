@@ -7,6 +7,16 @@ Dibangun dengan PHP 8.1+ native (tanpa framework / Composer), PDO, dan Bootstrap
 jadi tetap berjalan di jaringan sekolah tanpa internet). Database utama **MySQL/MariaDB** (XAMPP, Laragon,
 shared hosting); **SQLite** tersedia sebagai alternatif tanpa server database.
 
+![Dashboard administrasi](docs/img/02-dashboard-admin.jpg)
+
+## Dokumentasi
+
+| Dokumen | Isi |
+|---|---|
+| 📘 [**Instalasi di cPanel**](docs/INSTALASI-CPANEL.md) | Langkah demi langkah lewat browser: versi PHP, database, phpMyAdmin, upload, SSL, backup otomatis, pemecahan masalah |
+| 👥 [**Panduan Pengguna**](docs/PANDUAN-PENGGUNA.md) | Cara memakai aplikasi untuk setiap peran, dilengkapi tangkapan layar |
+| 🛠 [**Dokumentasi Teknis**](docs/DOKUMENTASI-TEKNIS.md) | Arsitektur, konfigurasi, skema database (ERD), hak akses, daftar rute, aturan bisnis, cara menambah fitur |
+
 ## Fitur per Peran
 
 | Peran | Fitur |
@@ -23,9 +33,12 @@ Pengumuman bisa ditujukan ke semua pengguna atau peran tertentu.
 
 ## Menjalankan (MySQL / MariaDB)
 
-Database MySQL lengkap dengan data dummy tersedia di **`database/sekolah_mysql.sql`**
-(skema + 57 pengguna, 3 kelas, 7 mapel, 42 jadwal, 480 absensi, 168 nilai, 80 tagihan, 55 pembayaran,
-pengumuman, arsip surat, catatan rapor).
+Tersedia dua file database MySQL siap import di folder `database/`:
+
+| File | Isi |
+|---|---|
+| **`sekolah_mysql.sql`** | Skema + data dummy: 57 pengguna, 3 kelas, 7 mapel, 42 jadwal, 480 absensi, 168 nilai, 80 tagihan, 55 pembayaran, pengumuman, arsip surat, catatan rapor (password semua akun `password123`) |
+| **`sekolah_mysql_kosong.sql`** | Skema + 1 akun `admin` / `admin12345` — untuk penggunaan nyata |
 
 ### Opsi A — Import file SQL (phpMyAdmin / XAMPP)
 
@@ -82,11 +95,16 @@ DB_DRIVER=sqlite php -S localhost:8000 -t public
 
 Atau ubah `'driver'` menjadi `'sqlite'` di `config.php`.
 
-### Deploy ke Apache / shared hosting
+### Deploy ke cPanel / shared hosting
 
-Import `database/sekolah_mysql.sql` (atau jalankan installer), atur `config.php`, lalu arahkan document root ke folder `public/`. Jika tidak memungkinkan (folder proyek diletakkan langsung di
-`htdocs`), `index.php` di root mengalihkan ke `public/` dan file `.htaccess` memblokir akses ke `app/`,
-`database/`, dan `config.php`. (Khusus SQLite: pastikan folder `database/` dapat ditulis oleh web server.)
+Ikuti panduan lengkap **[docs/INSTALASI-CPANEL.md](docs/INSTALASI-CPANEL.md)**. Ringkasnya:
+
+1. Pilih PHP ≥ 8.1, buat database + user MySQL, import `database/sekolah_mysql_kosong.sql` via phpMyAdmin.
+2. Upload & ekstrak aplikasi. Pilih salah satu: subdomain dengan document root `public/` (disarankan), atau
+   langsung di `public_html` — `.htaccess` bawaan meneruskan permintaan ke `public/` dan memblokir akses ke
+   `app/`, `database/`, `config*.php`, serta file `.sql`.
+3. Salin `config.local.example.php` menjadi `config.local.php` dan isi kredensial database.
+4. Login `admin` / `admin12345`, lalu segera ganti password.
 
 ## Aturan Penilaian
 
@@ -96,6 +114,8 @@ Import `database/sekolah_mysql.sql` (atau jalankan installer), atur `config.php`
 - Nilai & catatan rapor disimpan per tahun ajaran + semester aktif (diatur di menu Pengaturan).
 
 ## Keamanan
+
+Detail di [Dokumentasi Teknis § Keamanan](docs/DOKUMENTASI-TEKNIS.md#9-keamanan).
 
 - Password di-hash (`password_hash`), pembatasan percobaan login, regenerasi session ID saat login.
 - Token CSRF pada setiap form POST, semua query memakai prepared statement, output di-escape.
@@ -115,10 +135,13 @@ app/
   controllers/     # admin, guru, walikelas, siswa, keuangan, surat, laporan, data, pengumuman, dashboard
   views/           # template PHP
 database/
-  sekolah_mysql.sql # dump MySQL siap import: skema + data dummy
+  sekolah_mysql.sql        # dump MySQL siap import: skema + data dummy
+  sekolah_mysql_kosong.sql # dump MySQL siap import: skema + akun admin saja
   schema.sql        # skema tabel (dipakai installer, SQLite/MySQL)
   install.php       # instalasi + data demo
+docs/              # dokumentasi (instalasi cPanel, panduan pengguna, teknis) + tangkapan layar
 tests/smoke_test.php
+config.local.example.php  # contoh konfigurasi server -> salin menjadi config.local.php
 ```
 
 ## Pengujian

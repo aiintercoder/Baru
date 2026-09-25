@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 const LOGIN_MAX_ATTEMPTS = 5;
 const LOGIN_LOCK_SECONDS = 60;
+/** Password bawaan data demo / database kosong; pengguna diingatkan untuk menggantinya. */
+const DEFAULT_PASSWORDS = ['password123', 'admin12345'];
 
 function current_user(): ?array
 {
@@ -67,6 +69,9 @@ function attempt_login(string $username, string $password): ?string
     session_regenerate_id(true);
     unset($_SESSION['login_attempts'], $_SESSION['login_lock_until']);
     $_SESSION['uid'] = (int) $u['id'];
+    if (in_array($password, DEFAULT_PASSWORDS, true)) {
+        flash('warning', 'Anda masih memakai password bawaan. Segera ganti password melalui menu Profil & Password.');
+    }
     return null;
 }
 

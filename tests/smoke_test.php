@@ -5,12 +5,29 @@ declare(strict_types=1);
  * Smoke test end-to-end: menjalankan server PHP bawaan dengan database demo sementara,
  * login sebagai setiap peran, membuka semua menu, dan menguji alur input utama.
  *
- *   php tests/smoke_test.php
+ *   php tests/smoke_test.php           (SQLite sementara)
+ *   php tests/smoke_test.php --mysql   (MySQL/MariaDB, database uji sementara dibuat & dihapus otomatis)
  */
 
 $root = dirname(__DIR__);
-$db = sys_get_temp_dir() . '/siakad_test_' . getmypid() . '.sqlite';
-$env = 'DB_DRIVER=sqlite DB_SQLITE_PATH=' . escapeshellarg($db) . ' APP_DEBUG=true';
+$driver = in_array('--mysql', $argv, true) ? 'mysql' : 'sqlite';
+
+if ($driver === 'mysql') {
+    // Database uji sementara; kredensial via env DB_HOST/DB_PORT/DB_USER/DB_PASS (default root tanpa password)
+    $host = getenv('DB_HOST') ?: '127.0.0.1';
+    $port = getenv('DB_PORT') ?: '3306';
+    $user = getenv('DB_USER') ?: 'root';
+    $pass = getenv('DB_PASS') ?: '';
+    $db = 'siakad_test_' . getmypid();
+    $admin = new PDO("mysql:host=$host;port=$port", $user, $pass, [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]);
+    $admin->exec("CREATE DATABASE `$db` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
+    $env = sprintf('DB_DRIVER=mysql DB_HOST=%s DB_PORT=%s DB_NAME=%s DB_USER=%s DB_PASS=%s APP_DEBUG=true',
+        escapeshellarg($host), escapeshellarg($port), $db, escapeshellarg($user), escapeshellarg($pass));
+} else {
+    $db = sys_get_temp_dir() . '/siakad_test_' . getmypid() . '.sqlite';
+    $env = 'DB_DRIVER=sqlite DB_SQLITE_PATH=' . escapeshellarg($db) . ' APP_DEBUG=true';
+}
+echo "Driver database: $driver\n";
 
 passthru("$env php " . escapeshellarg("$root/database/install.php") . ' --demo --fresh > /dev/null', $rc);
 if ($rc !== 0) {
@@ -198,8 +215,12 @@ check(str_contains($res[1], 'Password berhasil diganti'), 'pengguna mengganti pa
 check(str_contains($final, 'r=login'), 'logout');
 
 proc_terminate($server);
-foreach ([$db, "$db-wal", "$db-shm"] as $f) {
-    @unlink($f);
+if ($driver === 'mysql') {
+    $admin->exec("DROP DATABASE `$db`");
+} else {
+    foreach ([$db, "$db-wal", "$db-shm"] as $f) {
+        @unlink($f);
+    }
 }
 foreach ($jars as $j) {
     @unlink($j);

@@ -15,13 +15,27 @@ function db(): PDO
         PDO::ATTR_EMULATE_PREPARES   => false,
     ];
 
-    if ($c['driver'] === 'mysql') {
-        $dsn = sprintf('mysql:host=%s;port=%s;dbname=%s;charset=utf8mb4', $c['host'], $c['port'], $c['name']);
-        $pdo = new PDO($dsn, $c['user'], $c['pass'], $options);
-    } else {
-        $pdo = new PDO('sqlite:' . $c['sqlite_path'], null, null, $options);
-        $pdo->exec('PRAGMA foreign_keys = ON');
-        $pdo->exec('PRAGMA journal_mode = WAL');
+    try {
+        if ($c['driver'] === 'mysql') {
+            $dsn = sprintf('mysql:host=%s;port=%s;dbname=%s;charset=utf8mb4', $c['host'], $c['port'], $c['name']);
+            $pdo = new PDO($dsn, $c['user'], $c['pass'], $options);
+            $pdo->exec("SET time_zone = '" . date('P') . "'");
+        } else {
+            $pdo = new PDO('sqlite:' . $c['sqlite_path'], null, null, $options);
+            $pdo->exec('PRAGMA foreign_keys = ON');
+            $pdo->exec('PRAGMA journal_mode = WAL');
+        }
+    } catch (PDOException $e) {
+        if (PHP_SAPI === 'cli') {
+            throw $e;
+        }
+        error_log((string) $e);
+        http_response_code(500);
+        exit('<!doctype html><meta charset="utf-8"><title>Database tidak terhubung</title>'
+            . '<div style="font-family:sans-serif;max-width:620px;margin:80px auto">'
+            . '<h2>Tidak dapat terhubung ke database</h2>'
+            . '<p>Periksa pengaturan database di <code>config.php</code> dan pastikan server MySQL berjalan '
+            . 'serta database sudah dibuat / file <code>database/sekolah_mysql.sql</code> sudah di-import.</p></div>');
     }
 
     return $pdo;

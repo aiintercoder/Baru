@@ -6,7 +6,7 @@ declare(strict_types=1);
  *
  *   php database/install.php            -> buat tabel + akun admin awal
  *   php database/install.php --demo     -> buat tabel + data contoh lengkap (semua peran)
- *   php database/install.php --fresh    -> hapus database SQLite lama terlebih dahulu
+ *   php database/install.php --fresh    -> hapus seluruh tabel/database lama terlebih dahulu (SQLite & MySQL)
  */
 
 if (PHP_SAPI !== 'cli') {
@@ -36,11 +36,18 @@ if ($driver === 'sqlite') {
 }
 
 $pdo = db();
+if ($fresh && $driver === 'mysql') {
+    $pdo->exec('SET FOREIGN_KEY_CHECKS = 0');
+    foreach (db_all('SHOW TABLES') as $row) {
+        $pdo->exec('DROP TABLE `' . str_replace('`', '', (string) reset($row)) . '`');
+    }
+    $pdo->exec('SET FOREIGN_KEY_CHECKS = 1');
+}
 $exists = $driver === 'sqlite'
     ? (bool) db_value("SELECT name FROM sqlite_master WHERE type = 'table' AND name = 'users'")
     : (bool) db_value("SHOW TABLES LIKE 'users'");
 if ($exists) {
-    fwrite(STDERR, "Database sudah terpasang. Gunakan --fresh untuk memasang ulang (SQLite).\n");
+    fwrite(STDERR, "Database sudah terpasang. Gunakan --fresh untuk menghapus & memasang ulang.\n");
     exit(1);
 }
 
@@ -49,7 +56,7 @@ $schema = str_replace('{PK}', $pk, file_get_contents(__DIR__ . '/schema.sql'));
 $schema = preg_replace('/^\s*--.*$/m', '', $schema);
 foreach (array_filter(array_map('trim', explode(';', $schema))) as $stmt) {
     if ($driver === 'mysql' && str_starts_with($stmt, 'CREATE TABLE')) {
-        $stmt .= ' ENGINE=InnoDB DEFAULT CHARSET=utf8mb4';
+        $stmt .= ' ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci';
     }
     $pdo->exec($stmt);
 }

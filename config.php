@@ -9,8 +9,8 @@ return [
     'timezone' => 'Asia/Jakarta',
 
     'db' => [
-        // 'sqlite' (default, tanpa instalasi server) atau 'mysql'
-        'driver'      => getenv('DB_DRIVER') ?: 'sqlite',
+        // 'mysql' (default, cocok untuk XAMPP/Laragon) atau 'sqlite' (tanpa server database)
+        'driver'      => getenv('DB_DRIVER') ?: 'mysql',
         'sqlite_path' => getenv('DB_SQLITE_PATH') ?: __DIR__ . '/database/sekolah.sqlite',
         'host'        => getenv('DB_HOST') ?: '127.0.0.1',
         'port'        => getenv('DB_PORT') ?: '3306',

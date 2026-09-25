@@ -30,12 +30,22 @@ function db(): PDO
             throw $e;
         }
         error_log((string) $e);
+        // Buang template yang mungkin sedang di-render agar pesan tidak tercampur
+        while (ob_get_level() > 0) {
+            ob_end_clean();
+        }
         http_response_code(500);
-        exit('<!doctype html><meta charset="utf-8"><title>Database tidak terhubung</title>'
-            . '<div style="font-family:sans-serif;max-width:620px;margin:80px auto">'
-            . '<h2>Tidak dapat terhubung ke database</h2>'
-            . '<p>Periksa pengaturan database di <code>config.php</code> dan pastikan server MySQL berjalan '
-            . 'serta database sudah dibuat / file <code>database/sekolah_mysql.sql</code> sudah di-import.</p></div>');
+        exit('<!doctype html><html lang="id"><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">'
+            . '<title>Database tidak terhubung</title>'
+            . '<body style="font-family:system-ui,sans-serif;background:#f4f6fb;margin:0;padding:16px">'
+            . '<div style="max-width:640px;margin:64px auto;background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:28px">'
+            . '<h2 style="margin-top:0;color:#b91c1c">Tidak dapat terhubung ke database</h2>'
+            . '<p>Aplikasi tidak bisa tersambung ke server database. Periksa hal berikut:</p><ol style="line-height:1.7">'
+            . '<li>Nama database, user, dan password di <code>config.local.php</code> (atau <code>config.php</code>) sudah benar.</li>'
+            . '<li>User database sudah ditambahkan ke database dengan hak <em>ALL PRIVILEGES</em>.</li>'
+            . '<li>File <code>database/sekolah_mysql_kosong.sql</code> atau <code>sekolah_mysql.sql</code> sudah di-import.</li>'
+            . '<li>Server MySQL/MariaDB sedang berjalan.</li></ol>'
+            . '<p style="color:#64748b;font-size:14px;margin-bottom:0">Detail kesalahan dicatat di log error server.</p></div></body></html>');
     }
 
     return $pdo;

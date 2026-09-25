@@ -11,11 +11,23 @@ shared hosting); **SQLite** tersedia sebagai alternatif tanpa server database.
 
 ## Dokumentasi
 
-| Dokumen | Isi |
-|---|---|
-| 📘 [**Instalasi di cPanel**](docs/INSTALASI-CPANEL.md) | Langkah demi langkah lewat browser: versi PHP, database, phpMyAdmin, upload, SSL, backup otomatis, pemecahan masalah |
-| 👥 [**Panduan Pengguna**](docs/PANDUAN-PENGGUNA.md) | Cara memakai aplikasi untuk setiap peran, dilengkapi tangkapan layar |
-| 🛠 [**Dokumentasi Teknis**](docs/DOKUMENTASI-TEKNIS.md) | Arsitektur, konfigurasi, skema database (ERD), hak akses, daftar rute, aturan bisnis, cara menambah fitur |
+Tersedia dalam format **PDF** (siap cetak/dibagikan) di folder [`docs/pdf/`](docs/pdf/) dan Markdown:
+
+| Dokumen | PDF | Isi |
+|---|---|---|
+| 📚 **Dokumentasi Lengkap** | [SIAKAD-Dokumentasi-Lengkap.pdf](docs/pdf/SIAKAD-Dokumentasi-Lengkap.pdf) | Gabungan ketiga dokumen di bawah |
+| 📘 [**Instalasi di cPanel**](docs/INSTALASI-CPANEL.md) | [PDF](docs/pdf/SIAKAD-Panduan-Instalasi-cPanel.pdf) | Langkah demi langkah lewat browser: versi PHP, database, phpMyAdmin, upload, SSL, backup otomatis, pemecahan masalah |
+| 👥 [**Panduan Pengguna**](docs/PANDUAN-PENGGUNA.md) | [PDF](docs/pdf/SIAKAD-Panduan-Pengguna.pdf) | Cara memakai aplikasi untuk setiap peran, dilengkapi tangkapan layar |
+| 🛠 [**Dokumentasi Teknis**](docs/DOKUMENTASI-TEKNIS.md) | [PDF](docs/pdf/SIAKAD-Dokumentasi-Teknis.pdf) | Arsitektur, konfigurasi, skema database (ERD), hak akses, daftar rute, aturan bisnis, cara menambah fitur |
+
+Setelah mengubah file Markdown di `docs/`, bangun ulang PDF dengan:
+
+```bash
+cd tools/docs-pdf
+npm install
+npx playwright install chromium   # sekali saja, mengunduh Chromium
+npm run build                    # hasil: docs/pdf/*.pdf
+```
 
 ## Fitur per Peran
 
@@ -139,7 +151,8 @@ database/
   sekolah_mysql_kosong.sql # dump MySQL siap import: skema + akun admin saja
   schema.sql        # skema tabel (dipakai installer, SQLite/MySQL)
   install.php       # instalasi + data demo
-docs/              # dokumentasi (instalasi cPanel, panduan pengguna, teknis) + tangkapan layar
+docs/              # dokumentasi Markdown + tangkapan layar (img/) + versi PDF (pdf/)
+tools/docs-pdf/    # pembangun PDF dokumentasi (Markdown -> PDF via Chromium)
 tests/smoke_test.php
 config.local.example.php  # contoh konfigurasi server -> salin menjadi config.local.php
 ```

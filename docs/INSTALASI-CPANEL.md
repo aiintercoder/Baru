@@ -5,6 +5,12 @@ Seluruh langkah bisa dilakukan lewat browser, **tanpa akses SSH/terminal**.
 
 > Estimasi waktu: 15–30 menit.
 
+> **Tentang gambar di panduan ini.** Tangkapan layar **phpMyAdmin** dan **aplikasi SIAKAD** diambil dari
+> instalasi sungguhan saat pengujian. Tampilan halaman cPanel (File Manager, MySQL® Database Wizard, Domains)
+> berbeda-beda antar penyedia hosting dan tema, sehingga langkahnya ditunjukkan dengan **jalur menu**
+> seperti <span class="menu-path">cPanel › Databases › MySQL® Database Wizard</span>. Cari nama menu tersebut
+> di kolom pencarian cPanel bila letaknya berbeda.
+
 ---
 
 ## Daftar Isi
@@ -81,6 +87,8 @@ Seluruh langkah bisa dilakukan lewat browser, **tanpa akses SSH/terminal**.
 
 ## 4. Mengatur Versi PHP
 
+<div class="menu-path">cPanel › Software › MultiPHP Manager</div> atau <div class="menu-path">cPanel › Software › Select PHP Version</div>
+
 Nama menu berbeda-beda tergantung hosting:
 
 - **MultiPHP Manager** → centang domain Anda → pilih **PHP 8.2** (atau 8.1/8.3) → **Apply**.
@@ -92,6 +100,8 @@ Nama menu berbeda-beda tergantung hosting:
 ---
 
 ## 5. Membuat Database & User MySQL
+
+<div class="menu-path">cPanel › Databases › MySQL® Database Wizard</div>
 
 1. Buka **MySQL® Database Wizard**.
 2. **Step 1 – Create A Database:** isi misalnya `sekolah` → **Next Step**.
@@ -121,13 +131,28 @@ Tersedia dua pilihan file SQL di folder `database/` (ekstrak ZIP di komputer And
 
 Langkah import:
 
+<div class="menu-path">cPanel › Databases › phpMyAdmin</div>
+
 1. Buka **phpMyAdmin** dari cPanel.
-2. Di panel kiri, klik database **`akunsaya_sekolah`**.
-3. Klik tab **Import** → **Choose File** → pilih file `.sql` yang diinginkan.
-4. Biarkan pengaturan lain default (Format: SQL, Character set: utf-8) → klik **Import** / **Go**.
-5. Pastikan muncul pesan hijau *"Import has been successfully finished"* dan terdapat **14 tabel**:
+2. Di panel kiri, klik database **`akunsaya_sekolah`**. Database yang baru dibuat masih kosong.
+
+   ![phpMyAdmin: database yang baru dibuat masih kosong](img/pma-01-database-kosong.jpg)
+
+3. Klik tab **Import** → **Choose File** → pilih file `.sql` yang diinginkan
+   (pada contoh: `sekolah_mysql_kosong.sql`).
+
+   ![phpMyAdmin: tab Import dengan file terpilih](img/pma-02-import.jpg)
+
+4. Biarkan pengaturan lain default (Format: SQL, Character set: utf-8), gulir ke bawah, lalu klik **Import** / **Go**.
+5. Pastikan muncul pesan hijau *"Import has been successfully finished"*, dan di panel kiri terlihat **14 tabel**:
    `announcements, attendance, classes, grades, invoices, letters, payments, report_notes, schedules,
    settings, students, subjects, teaching_assignments, users`.
+
+   ![phpMyAdmin: import berhasil, 14 tabel tampil di panel kiri](img/pma-03-import-berhasil.jpg)
+
+6. Klik nama database untuk melihat daftar tabel beserta jumlah barisnya.
+
+   ![phpMyAdmin: daftar tabel setelah import](img/pma-04-daftar-tabel.jpg)
 
 > Ingin memulai ulang? Di phpMyAdmin pilih semua tabel → **Drop**, lalu import lagi.
 > File SQL sudah memuat `DROP TABLE IF EXISTS`, jadi import ulang juga akan menimpa tabel lama.
@@ -142,6 +167,8 @@ Pilih **salah satu** metode berikut.
 
 Metode paling aman karena kode & konfigurasi berada di luar folder web.
 Contoh alamat hasil: `https://siakad.namasekolah.sch.id`
+
+<div class="menu-path">cPanel › Files › File Manager</div> lalu <div class="menu-path">cPanel › Domains › Domains › Create A New Domain</div>
 
 1. **File Manager** → buka folder home (`/home/akunsaya/`, satu tingkat **di atas** `public_html`).
 2. **Upload** `siakad.zip` → klik kanan → **Extract**. Hasilnya folder `/home/akunsaya/siakad/`.
@@ -167,6 +194,8 @@ Gunakan metode ini bila document root tidak bisa diubah (misalnya domain utama).
 File `.htaccess` bawaan akan otomatis meneruskan semua permintaan ke folder `public/` dan
 **memblokir** akses ke `app/`, `database/`, `config.php`, `config.local.php`, serta file `.sql`.
 
+<div class="menu-path">cPanel › Files › File Manager</div>
+
 1. **File Manager** → klik **Settings** (kanan atas) → centang **Show Hidden Files (dotfiles)** → **Save**.
    Ini penting agar file `.htaccess` terlihat.
 2. Buka `public_html/` (untuk domain utama) atau buat subfolder, misalnya `public_html/siakad/`.
@@ -182,7 +211,9 @@ Alamat hasil:
 
 > **Verifikasi keamanan:** setelah langkah 8, buka `https://namasekolah.sch.id/config.php` dan
 > `https://namasekolah.sch.id/database/sekolah_mysql.sql`. Keduanya **harus** menampilkan
-> *403 Forbidden*. Jika file bisa diunduh, `.htaccess` belum ter-upload — ulangi langkah 1 di atas.
+> *403 Forbidden* seperti gambar berikut. Jika file bisa diunduh, `.htaccess` belum ter-upload — ulangi langkah 1 di atas.
+
+![Hasil yang benar: config.php tidak bisa dibuka (403 Forbidden)](img/inst-10-cek-403.jpg)
 
 ---
 
@@ -212,7 +243,15 @@ Alamat hasil:
 4. **Save Changes**.
 5. (Opsional, disarankan) Klik kanan `config.local.php` → **Change Permissions** → **600**
    (atau **640** bila muncul error izin akses).
-6. Buka alamat aplikasi di browser. Halaman login akan tampil.
+6. Buka alamat aplikasi di browser. Halaman login akan tampil. Nama sekolah masih bertuliskan
+   *"Nama Sekolah"* sampai diisi di menu **Pengaturan** (langkah 11).
+
+   ![Halaman login setelah instalasi](img/inst-01-login-pertama.jpg)
+
+   Jika yang muncul halaman berikut, periksa kembali isi `config.local.php`
+   (lihat [Pemecahan Masalah](#14-pemecahan-masalah)):
+
+   ![Halaman bila koneksi database gagal](img/inst-09-error-database.jpg)
 
 > Gunakan `localhost` sebagai host. Beberapa hosting memakai host database terpisah
 > (misalnya `mysql.namahosting.com`) — lihat informasi di halaman **MySQL® Databases** atau
@@ -224,6 +263,8 @@ Alamat hasil:
 ---
 
 ## 9. Mengaktifkan HTTPS (SSL)
+
+<div class="menu-path">cPanel › Security › SSL/TLS Status</div> dan <div class="menu-path">cPanel › Domains › Domains › Force HTTPS Redirect</div>
 
 1. **SSL/TLS Status** → centang domain/subdomain aplikasi → **Run AutoSSL** (gratis, Let's Encrypt/Sectigo).
 2. **Domains** → aktifkan **Force HTTPS Redirect** untuk domain tersebut.
@@ -239,7 +280,16 @@ Aplikasi otomatis menandai cookie sesi sebagai *Secure* ketika diakses lewat HTT
 | `sekolah_mysql_kosong.sql` | `admin` | `admin12345` |
 | `sekolah_mysql.sql` (data contoh) | `admin`, `kepsek`, `tu`, `guru1`, `walikelas1`, `siswa1`, `ortu1`, … | `password123` |
 
-Setelah login, aplikasi akan memberi peringatan bila Anda masih memakai password bawaan.
+Setelah login, aplikasi akan memberi peringatan bila Anda masih memakai password bawaan:
+
+![Peringatan password bawaan setelah login pertama](img/inst-02-peringatan-password.jpg)
+
+**Mengganti password:** klik nama Anda di kanan atas → **Profil**, atau menu **Profil & Password** di
+sidebar. Isi password lama, password baru (minimal 8 karakter), dan konfirmasinya → **Ganti Password**.
+
+![Formulir ganti password](img/inst-03-ganti-password.jpg)
+
+![Password berhasil diganti](img/inst-04-password-berhasil.jpg)
 
 **Checklist sebelum dipakai sungguhan:**
 
@@ -259,15 +309,35 @@ Setelah login, aplikasi akan memberi peringatan bila Anda masih memakai password
 Login sebagai **admin**, lalu isi data dengan urutan berikut (karena saling bergantung):
 
 1. **Pengaturan** — nama sekolah, alamat, telepon, nama & NIP kepala sekolah, **tahun ajaran** (format
-   `2026/2027`) dan **semester** aktif.
-2. **Pengguna → Tambah** untuk staf: Kepala Sekolah, Tata Usaha, Guru, dan **Wali Kelas**
+   `2026/2027`) dan **semester** aktif → **Simpan Pengaturan**.
+
+   ![Menu Pengaturan](img/inst-05-pengaturan.jpg)
+
+2. **Pengguna → Tambah Pengguna** untuk staf: Kepala Sekolah, Tata Usaha, Guru, dan **Wali Kelas**
    (wali kelas juga bisa mengajar mata pelajaran).
-3. **Kelas** — buat kelas (mis. `VII-A`, tingkat 7) dan pilih wali kelasnya.
-4. **Mata Pelajaran** — kode, nama, dan KKM.
+
+   ![Menambah akun wali kelas](img/inst-08-tambah-wali-kelas.jpg)
+
+3. **Kelas → Tambah Kelas** — nama (mis. `VII-A`), tingkat (7), dan wali kelasnya.
+
+   ![Menambah kelas](img/inst-06-tambah-kelas.jpg)
+
+4. **Mata Pelajaran → Tambah Mapel** — kode, nama, dan KKM.
+
+   ![Menambah mata pelajaran](img/inst-07-tambah-mapel.jpg)
+
 5. **Penugasan Guru** — tentukan guru pengampu setiap mata pelajaran di setiap kelas.
+
+   ![Penugasan guru](img/g-admin-penugasan.jpg)
+
 6. **Jadwal Pelajaran** — per kelas; aplikasi menolak jadwal yang bentrok (kelas maupun guru).
-7. **Pengguna → Tambah** dengan peran **Orang Tua Murid**.
-8. **Pengguna → Tambah** dengan peran **Murid** — isi NIS, kelas, dan hubungkan ke akun orang tua.
+
+   ![Jadwal pelajaran](img/04-admin-jadwal.jpg)
+
+7. **Pengguna → Tambah Pengguna** dengan peran **Orang Tua Murid**.
+8. **Pengguna → Tambah Pengguna** dengan peran **Murid** — isi NIS, kelas, dan hubungkan ke akun orang tua.
+
+   ![Menambah murid](img/g-admin-form-murid.jpg)
 
 Setelah itu Tata Usaha bisa membuat tagihan, guru mulai mengisi absensi & nilai.
 Panduan lengkap per peran ada di [PANDUAN-PENGGUNA.md](PANDUAN-PENGGUNA.md).
@@ -284,6 +354,8 @@ Panduan lengkap per peran ada di [PANDUAN-PENGGUNA.md](PANDUAN-PENGGUNA.md).
 ### Cara otomatis dengan Cron Job
 
 1. **File Manager** → buat folder `/home/akunsaya/backup-siakad/`.
+<div class="menu-path">cPanel › Advanced › Cron Jobs</div>
+
 2. **Cron Jobs** → *Add New Cron Job* → **Once Per Day** (mis. pukul 01:00) → isi **Command**:
 
    ```bash
@@ -326,13 +398,15 @@ Panduan lengkap per peran ada di [PANDUAN-PENGGUNA.md](PANDUAN-PENGGUNA.md).
 | Import SQL gagal: *Unknown collation* | MySQL terlalu lama (< 5.5). Minta hosting memperbarui atau pilih server MariaDB/MySQL terbaru. |
 | Lupa password admin | phpMyAdmin → database → tab **SQL**, jalankan perintah di bawah, lalu login dengan `admin12345` dan segera ganti password. |
 
-Reset password admin menjadi `admin12345`:
+Reset password admin menjadi `admin12345` — di phpMyAdmin pilih database → tab **SQL** → tempel perintah berikut → **Go**:
 
 ```sql
 UPDATE users
 SET password_hash = '$2y$12$FhzU3RY2x3znCoTJICp/QeSaS3.sIH4l96VJMA5XjvCnt9NZx8SFi', active = 1
 WHERE username = 'admin';
 ```
+
+![phpMyAdmin: menjalankan perintah reset password admin](img/pma-05-sql-reset-password.jpg)
 
 Menampilkan pesan error detail untuk diagnosis (**kembalikan ke `false` setelah selesai**):
 

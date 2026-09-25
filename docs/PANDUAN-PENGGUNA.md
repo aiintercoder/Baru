@@ -33,6 +33,9 @@ Wali Kelas, Murid, dan Orang Tua Murid**.
 ### Tampilan umum
 
 - **Sidebar kiri** berisi menu sesuai peran Anda. Di HP, buka menu dengan tombol ☰ di kiri atas.
+
+  <div class="img-row"><img src="img/12-siswa-mobile.jpg" alt="Tampilan di HP"><img src="img/g-mobile-menu.jpg" alt="Menu di HP"></div>
+
 - **Bilah atas** menampilkan nama sekolah, tahun ajaran & semester aktif, serta menu akun
   (Profil, Keluar).
 - **Dashboard** menampilkan ringkasan sesuai peran dan pengumuman terbaru.
@@ -44,11 +47,20 @@ Menu **Profil & Password**:
 - Ubah email dan nomor HP.
 - Ganti password: isi password lama, password baru (minimal 8 karakter), dan konfirmasinya.
 
+![Profil & Password](img/g-profil.jpg)
+
 ### Pengumuman
 
 Semua pengguna dapat membaca pengumuman di menu **Pengumuman**. Setiap pengumuman memiliki sasaran
 (semua pengguna, semua guru, murid, orang tua, dan sebagainya). Pengguna hanya melihat pengumuman yang
 ditujukan kepadanya.
+
+![Daftar pengumuman](img/g-pengumuman.jpg)
+
+Administrasi, Kepala Sekolah, dan Tata Usaha dapat membuat pengumuman melalui **Buat Pengumuman**:
+isi judul, pilih sasaran pada **Ditujukan kepada**, tulis isinya, lalu **Simpan**.
+
+![Membuat pengumuman untuk orang tua](img/g-pengumuman-form.jpg)
 
 ### Mencetak
 
@@ -82,6 +94,8 @@ Bila perannya **Murid**, muncul kolom tambahan:
 | Akun Orang Tua / Wali | Buat akun orang tua terlebih dahulu. Satu orang tua dapat terhubung ke beberapa anak |
 | Jenis kelamin, tempat & tanggal lahir, alamat | Data biodata |
 
+![Formulir menambah murid](img/g-admin-form-murid.jpg)
+
 **Aturan penting:**
 
 - Akun yang dinonaktifkan (**Akun aktif** tidak dicentang) tidak bisa login, tetapi datanya tetap tersimpan.
@@ -97,15 +111,24 @@ Menu **Kelas** → **Tambah Kelas**: isi nama (mis. `VII-A`), tingkat (1–12), 
 Hanya pengguna berperan *Wali Kelas* yang bisa dipilih, dan satu wali kelas hanya untuk satu kelas.
 Kelas yang masih memiliki murid tidak bisa dihapus.
 
+![Daftar kelas](img/g-admin-kelas.jpg)
+
+Kolom **Siswa** dan **Mapel** dapat diklik untuk membuka data siswa dan penugasan kelas tersebut;
+ikon 📅 membuka jadwal kelas.
+
 ### Mata Pelajaran
 
 Isi **kode** (mis. `MTK`), **nama**, dan **KKM** (0–100). KKM dipakai untuk menentukan status
 *Tuntas / Belum Tuntas* di rapor.
 
+![Daftar mata pelajaran](img/g-admin-mapel.jpg)
+
 ### Penugasan Guru
 
 Tentukan guru pengampu untuk setiap pasangan **kelas + mata pelajaran**. Satu mata pelajaran di satu kelas
 hanya diampu satu guru; menyimpan ulang akan mengganti gurunya.
+
+![Penugasan guru](img/g-admin-penugasan.jpg)
 
 > Menghapus penugasan juga menghapus jadwal dan **nilai** mata pelajaran tersebut di kelas itu.
 
@@ -121,6 +144,8 @@ gurunya sedang mengajar di kelas lain.
 
 Isi identitas sekolah (tampil di rapor & kwitansi), nama dan NIP kepala sekolah (untuk tanda tangan rapor),
 serta **tahun ajaran** dan **semester aktif**.
+
+![Pengaturan sekolah](img/g-admin-pengaturan.jpg)
 
 > Tahun ajaran & semester aktif menentukan periode input nilai, catatan rapor, dan rekap kehadiran.
 > Ganti di awal semester baru; nilai semester sebelumnya tetap tersimpan dan bisa dilihat di rapor.
@@ -151,6 +176,22 @@ Kepala Sekolah memantau seluruh kegiatan sekolah (hanya-baca, kecuali pengumuman
 
 Gunakan filter tanggal (default: semester aktif) lalu **Terapkan**. Tombol 🖨 untuk mencetak.
 
+**Data Siswa** — filter per kelas atau cari nama/NIS; ikon 🏅 membuka rapor siswa.
+
+![Data siswa](img/g-kepsek-data-siswa.jpg)
+
+**Data Guru**
+
+![Data guru](img/g-kepsek-data-guru.jpg)
+
+**Laporan Nilai** — angka merah menunjukkan jumlah siswa di bawah KKM.
+
+![Laporan nilai](img/g-kepsek-laporan-nilai.jpg)
+
+**Laporan Keuangan**
+
+![Laporan keuangan](img/g-kepsek-laporan-keuangan.jpg)
+
 ---
 
 ## Tata Usaha
@@ -168,6 +209,8 @@ Daftar semua tagihan dengan filter kelas, status (belum lunas / sebagian / lunas
    dan tanggal jatuh tempo.
 3. **Buat Tagihan** — satu tagihan dibuat untuk setiap siswa sasaran.
 
+![Membuat tagihan untuk satu kelas](img/g-tu-buat-tagihan.jpg)
+
 **Mencatat pembayaran** → klik **Bayar** pada tagihan:
 
 ![Pembayaran](img/09-tu-pembayaran.jpg)
@@ -178,12 +221,16 @@ Daftar semua tagihan dengan filter kelas, status (belum lunas / sebagian / lunas
 3. Nomor kwitansi dibuat otomatis dengan format `KW/TahunBulan/Nomor`, misalnya `KW/202609/00012`.
 4. Klik 🖨 untuk mencetak **kwitansi**.
 
+![Kwitansi pembayaran](img/g-tu-kwitansi.jpg)
+
 Pembayaran yang salah bisa dibatalkan dengan tombol 🗑. Tagihan hanya bisa dihapus bila belum ada pembayaran.
 
 ### Surat Masuk/Keluar
 
 **Catat Surat**: jenis (masuk/keluar), nomor, tanggal, pengirim/penerima, perihal, dan keterangan/disposisi.
 Arsip bisa dicari berdasarkan nomor, pihak, atau perihal. Kepala Sekolah dapat melihat arsip ini.
+
+![Arsip surat masuk & keluar](img/g-tu-surat.jpg)
 
 ### Lainnya
 
@@ -202,6 +249,12 @@ Arsip bisa dicari berdasarkan nomor, pihak, atau perihal. Kepala Sekolah dapat m
 | **Jadwal Mengajar** | Daftar mapel yang diampu dan jadwal mingguan |
 | **Input Absensi** | Absensi harian kelas yang diajar |
 | **Input Nilai** | Nilai Tugas, UTS, dan UAS per kelas & mapel |
+
+### Jadwal Mengajar
+
+Tombol **Nilai** dan **Absensi** di setiap baris langsung membuka halaman input untuk kelas tersebut.
+
+![Jadwal mengajar](img/g-guru-jadwal.jpg)
 
 ### Input Absensi
 
@@ -237,7 +290,21 @@ Wali Kelas memiliki semua menu **Guru**, ditambah menu **Perwalian** untuk kelas
 | **Rekap Nilai** | Nilai akhir semua mapel per siswa, rata-rata, dan **peringkat kelas** |
 | **Catatan Rapor** | Catatan/motivasi wali kelas untuk setiap siswa, tampil di rapor |
 
+**Siswa Kelas Saya**
+
+![Siswa kelas perwalian](img/g-walikelas-siswa.jpg)
+
+**Rekap Absensi** — pilih bulan, lalu 🖨 untuk mencetak.
+
+![Rekap absensi bulanan](img/g-walikelas-rekap-absensi.jpg)
+
+**Rekap Nilai**
+
 ![Rekap nilai kelas](img/07-walikelas-rekap-nilai.jpg)
+
+**Catatan Rapor** — tulis catatan untuk setiap siswa, lalu **Simpan Catatan**.
+
+![Catatan wali kelas](img/g-walikelas-catatan.jpg)
 
 **Mencetak rapor:** **Siswa Kelas Saya** → tombol **Rapor** → **Cetak**. Rapor memuat nilai semua mapel,
 predikat, status tuntas, ketidakhadiran, catatan wali kelas, dan kolom tanda tangan.
@@ -260,6 +327,18 @@ predikat, status tuntas, ketidakhadiran, catatan wali kelas, dan kolom tanda tan
 
 Murid hanya dapat melihat datanya sendiri. Pembayaran dilakukan melalui bagian Tata Usaha.
 
+**Jadwal Pelajaran** — hari ini ditandai *Hari ini*.
+
+![Jadwal pelajaran murid](img/g-siswa-jadwal.jpg)
+
+**Kehadiran**
+
+![Kehadiran murid](img/g-siswa-kehadiran.jpg)
+
+**Tagihan Sekolah** — klik **Kwitansi** untuk mencetak bukti pembayaran.
+
+![Tagihan sekolah](img/g-siswa-tagihan.jpg)
+
 ---
 
 ## Orang Tua Murid
@@ -268,6 +347,8 @@ Orang tua melihat informasi yang sama seperti murid, yaitu dashboard, jadwal, ni
 dan tagihan, **untuk anaknya**.
 
 ![Rapor dilihat orang tua](img/11-ortu-rapor.jpg)
+
+![Dashboard orang tua dengan pilihan anak](img/g-ortu-dashboard.jpg)
 
 - Bila memiliki **lebih dari satu anak** di sekolah, pilih anak pada kotak **"Lihat data anak"** di bagian atas
   halaman. Pilihan ini berlaku untuk semua menu hingga diganti.

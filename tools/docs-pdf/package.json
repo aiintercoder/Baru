@@ -1,0 +1,14 @@
+{
+  "name": "siakad-docs-pdf",
+  "private": true,
+  "description": "Membangun dokumentasi SIAKAD (docs/*.md) menjadi PDF",
+  "scripts": {
+    "build": "node build.mjs"
+  },
+  "dependencies": {
+    "marked": "^14.1.4",
+    "mermaid": "^11.4.1",
+    "pdfjs-dist": "^4.10.38",
+    "playwright": "1.56.1"
+  }
+}

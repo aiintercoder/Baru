@@ -21,6 +21,10 @@ const outDir = path.join(docsDir, 'pdf');
 const mermaidJs = path.join(here, 'node_modules/mermaid/dist/mermaid.min.js');
 
 const DOCS = [
+    { key: 'xampp', md: 'INSTALASI-XAMPP.md', out: 'SIAKAD-Panduan-Instalasi-XAMPP.pdf',
+      title: 'Panduan Instalasi di XAMPP',
+      subtitle: 'Menjalankan SIAKAD Sekolah di komputer sendiri (localhost) tanpa internet',
+      hero: 'img/xampp-01-setup.jpg' },
     { key: 'instalasi', md: 'INSTALASI-CPANEL.md', out: 'SIAKAD-Panduan-Instalasi-cPanel.pdf',
       title: 'Panduan Instalasi di cPanel',
       subtitle: 'Langkah demi langkah memasang SIAKAD Sekolah di hosting cPanel — tanpa akses terminal',
@@ -35,7 +39,7 @@ const DOCS = [
       hero: 'img/05-guru-nilai.jpg' },
 ];
 const COMBINED = { out: 'SIAKAD-Dokumentasi-Lengkap.pdf', title: 'Dokumentasi Lengkap',
-    subtitle: 'Panduan Instalasi cPanel · Panduan Pengguna · Dokumentasi Teknis', hero: 'img/02-dashboard-admin.jpg' };
+    subtitle: 'Instalasi XAMPP · Instalasi cPanel · Panduan Pengguna · Dokumentasi Teknis', hero: 'img/02-dashboard-admin.jpg' };
 
 // Lebar area cetak A4 dikurangi margin kiri-kanan (16mm + 16mm) dalam piksel CSS (96 dpi)
 const CONTENT_WIDTH_PX = Math.floor((210 - 32) / 25.4 * 96);

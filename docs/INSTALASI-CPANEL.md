@@ -301,6 +301,8 @@ sidebar. Isi password lama, password baru (minimal 8 karakter), dan konfirmasiny
       (hanya untuk Metode B; pada Metode A file tersebut memang berada di luar folder web).
 - [ ] HTTPS aktif dan dipaksa.
 - [ ] Hapus file ZIP yang sudah diekstrak dari server.
+- [ ] (Opsional) Hapus `public/setup.php`. Halaman instalasi otomatis ini khusus untuk XAMPP/localhost; di hosting
+      ia sudah menolak semua akses (403) dan tidak bisa menimpa database, tetapi boleh dihapus agar lebih rapi.
 
 ---
 

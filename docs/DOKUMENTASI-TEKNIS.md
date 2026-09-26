@@ -39,7 +39,8 @@ hak akses, aturan bisnis, dan cara mengembangkan aplikasi.
 ├── config.php                 # Konfigurasi default (bisa ditimpa env var atau config.local.php)
 ├── config.local.example.php   # Contoh konfigurasi server; salin menjadi config.local.php
 ├── public/                    # DOCUMENT ROOT
-│   ├── index.php              # Front controller: session, header keamanan, routing, CSRF
+│   ├── index.php              # Front controller: cek versi PHP, session, header keamanan, routing, CSRF
+│   ├── setup.php              # Instalasi database lewat browser (khusus localhost, mis. XAMPP)
 │   └── assets/                # app.css + vendor/ (Bootstrap, ikon)
 ├── app/
 │   ├── bootstrap.php          # Memuat config & semua helper
@@ -254,6 +255,10 @@ Semua aksi yang mengubah data (`…/hapus`, form) hanya dijalankan melalui **POS
   memblokir `app/`, `database/`, `tests/`, `docs/`, `config*.php`, `.git`, serta file `.sql/.sqlite/.md/.log`.
   Folder `app/`, `database/`, `tests/` juga memiliki `.htaccess` `Require all denied` sebagai lapis kedua.
 - **Error:** dengan `debug = false`, pengecualian dicatat ke `error_log` dan pengguna melihat halaman 500 umum.
+- **Halaman instalasi (`public/setup.php`):** hanya melayani permintaan dari `127.0.0.1`/`::1`
+  (`is_local_request()`), memakai token CSRF sendiri, dan menolak bekerja bila tabel `users` sudah ada —
+  sehingga tidak dapat dipakai untuk menimpa database meski ikut ter-upload ke hosting. Di localhost, aplikasi
+  mengarahkan ke halaman ini bila database belum ada (`Unknown database`) atau tabel belum dibuat (SQLSTATE `42S02`).
 
 ---
 
@@ -280,6 +285,9 @@ Tes mencakup: login ketujuh peran dan membuka setiap menu (tanpa error PHP), pem
 per data, penolakan CSRF, input nilai, absensi, catatan rapor, pembuatan tagihan kelas, validasi & pencatatan
 pembayaran, kwitansi, pengumuman bertarget, tambah murid & login, deteksi jadwal bentrok, orang tua berganti
 anak, ganti password, dan logout.
+
+Tes juga memeriksa `setup.php`: dengan MySQL, formulir instalasi tidak tampil dan pemasangan ulang ditolak
+karena database sudah terpasang; dengan SQLite, halaman memberi petunjuk memakai installer CLI.
 
 Pemeriksaan sintaks semua file:
 

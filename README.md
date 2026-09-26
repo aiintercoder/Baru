@@ -15,7 +15,8 @@ Tersedia dalam format **PDF** (siap cetak/dibagikan) di folder [`docs/pdf/`](doc
 
 | Dokumen | PDF | Isi |
 |---|---|---|
-| 📚 **Dokumentasi Lengkap** | [SIAKAD-Dokumentasi-Lengkap.pdf](docs/pdf/SIAKAD-Dokumentasi-Lengkap.pdf) | Gabungan ketiga dokumen di bawah |
+| 📚 **Dokumentasi Lengkap** | [SIAKAD-Dokumentasi-Lengkap.pdf](docs/pdf/SIAKAD-Dokumentasi-Lengkap.pdf) | Gabungan keempat dokumen di bawah |
+| 💻 [**Instalasi di XAMPP**](docs/INSTALASI-XAMPP.md) | [PDF](docs/pdf/SIAKAD-Panduan-Instalasi-XAMPP.pdf) | Menjalankan di komputer sendiri (localhost) tanpa internet, instalasi database otomatis lewat browser, akses dari jaringan sekolah |
 | 📘 [**Instalasi di cPanel**](docs/INSTALASI-CPANEL.md) | [PDF](docs/pdf/SIAKAD-Panduan-Instalasi-cPanel.pdf) | Langkah demi langkah lewat browser: versi PHP, database, phpMyAdmin, upload, SSL, backup otomatis, pemecahan masalah |
 | 👥 [**Panduan Pengguna**](docs/PANDUAN-PENGGUNA.md) | [PDF](docs/pdf/SIAKAD-Panduan-Pengguna.pdf) | Cara memakai aplikasi untuk setiap peran, dilengkapi tangkapan layar |
 | 🛠 [**Dokumentasi Teknis**](docs/DOKUMENTASI-TEKNIS.md) | [PDF](docs/pdf/SIAKAD-Dokumentasi-Teknis.pdf) | Arsitektur, konfigurasi, skema database (ERD), hak akses, daftar rute, aturan bisnis, cara menambah fitur |
@@ -42,6 +43,15 @@ npm run build                    # hasil: docs/pdf/*.pdf
 | **Orang Tua** | Sama seperti murid untuk anaknya; mendukung **lebih dari satu anak** (pilih anak di bagian atas halaman) |
 
 Pengumuman bisa ditujukan ke semua pengguna atau peran tertentu.
+
+## Menjalankan di XAMPP (localhost, tanpa internet)
+
+1. Ekstrak aplikasi ke `C:\xampp\htdocs\siakad`.
+2. XAMPP Control Panel → **Start** Apache dan MySQL.
+3. Buka **http://localhost/siakad** → otomatis diarahkan ke halaman instalasi → pilih *Data contoh* atau
+   *Database kosong* → **Pasang Database** → login.
+
+Panduan lengkap: **[docs/INSTALASI-XAMPP.md](docs/INSTALASI-XAMPP.md)**.
 
 ## Menjalankan (MySQL / MariaDB)
 

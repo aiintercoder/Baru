@@ -1,0 +1,47 @@
+===============================================================
+  SIAKAD SEKOLAH - CARA MENJALANKAN DI XAMPP (TANPA INTERNET)
+===============================================================
+
+Kebutuhan: XAMPP versi 8.2 atau lebih baru (https://www.apachefriends.org)
+           Setelah XAMPP terpasang, aplikasi tidak memerlukan internet.
+
+LANGKAH
+-------
+1. Salin folder "siakad" ini ke dalam folder htdocs XAMPP:
+      Windows : C:\xampp\htdocs\siakad
+      macOS   : /Applications/XAMPP/xamppfiles/htdocs/siakad
+      Linux   : /opt/lampp/htdocs/siakad
+   (Pastikan file .htaccess ikut tersalin dan tidak ada folder
+    bertingkat seperti htdocs\siakad\siakad.)
+
+2. Buka XAMPP Control Panel, klik "Start" pada Apache dan MySQL.
+
+3. Buka browser ke:  http://localhost/siakad
+   Anda otomatis diarahkan ke halaman instalasi.
+
+4. Pilih "Data contoh" (untuk mencoba) atau "Database kosong"
+   (untuk dipakai sungguhan), lalu klik "Pasang Database".
+
+5. Klik "Buka Aplikasi" lalu login:
+      Data contoh     : admin / password123
+                        (juga kepsek, tu, guru1, walikelas1,
+                         siswa1, ortu1 - password sama)
+      Database kosong : admin / admin12345
+   Segera ganti password setelah login.
+
+DOKUMENTASI LENGKAP (PDF)
+-------------------------
+   docs\pdf\SIAKAD-Panduan-Instalasi-XAMPP.pdf   <- mulai dari sini
+   docs\pdf\SIAKAD-Panduan-Pengguna.pdf
+   docs\pdf\SIAKAD-Panduan-Instalasi-cPanel.pdf
+   docs\pdf\SIAKAD-Dokumentasi-Teknis.pdf
+   docs\pdf\SIAKAD-Dokumentasi-Lengkap.pdf       (gabungan semuanya)
+
+MASALAH UMUM
+------------
+ - "Tidak dapat terhubung ke MySQL" : Start modul MySQL di XAMPP.
+ - Apache tidak mau start (port 80) : ganti "Listen 80" menjadi
+   "Listen 8080" di httpd.conf, lalu buka http://localhost:8080/siakad
+ - "Versi PHP terlalu lama"          : pasang XAMPP 8.2 atau lebih baru.
+ - Tampilan berantakan               : file .htaccess tidak ikut tersalin.
+Detail lain ada di bagian "Pemecahan Masalah" pada PDF Panduan XAMPP.

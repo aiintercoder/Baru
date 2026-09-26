@@ -161,7 +161,12 @@ function abort(int $code, string $message = ''): never
     http_response_code($code);
     $titles = [403 => 'Akses Ditolak', 404 => 'Halaman Tidak Ditemukan', 419 => 'Sesi Kedaluwarsa', 500 => 'Terjadi Kesalahan'];
     $title = $titles[$code] ?? 'Kesalahan';
-    if (session_status() === PHP_SESSION_ACTIVE && current_user()) {
+    try {
+        $loggedIn = session_status() === PHP_SESSION_ACTIVE && current_user();
+    } catch (Throwable) {
+        $loggedIn = false; // database bermasalah: tampilkan halaman error sederhana
+    }
+    if ($loggedIn) {
         render('shared/error', ['code' => $code, 'message' => $message ?: $title], $title);
     } else {
         echo '<!doctype html><meta charset="utf-8"><title>' . e($title) . '</title>'
@@ -334,4 +339,10 @@ function visible_announcements(string $role, int $limit = 0): array
 function parse_rupiah(string $v): float
 {
     return (float) preg_replace('/\D/', '', $v);
+}
+
+/** Permintaan berasal dari komputer server itu sendiri (localhost)? */
+function is_local_request(): bool
+{
+    return in_array($_SERVER['REMOTE_ADDR'] ?? '', ['127.0.0.1', '::1'], true);
 }

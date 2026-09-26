@@ -34,6 +34,12 @@ function db(): PDO
         while (ob_get_level() > 0) {
             ob_end_clean();
         }
+        $local = is_local_request();
+        // XAMPP/localhost: database belum dibuat -> arahkan ke halaman instalasi
+        if ($local && $c['driver'] === 'mysql' && str_contains($e->getMessage(), 'Unknown database')) {
+            header('Location: setup.php');
+            exit;
+        }
         http_response_code(500);
         exit('<!doctype html><html lang="id"><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">'
             . '<title>Database tidak terhubung</title>'
@@ -44,7 +50,9 @@ function db(): PDO
             . '<li>Nama database, user, dan password di <code>config.local.php</code> (atau <code>config.php</code>) sudah benar.</li>'
             . '<li>User database sudah ditambahkan ke database dengan hak <em>ALL PRIVILEGES</em>.</li>'
             . '<li>File <code>database/sekolah_mysql_kosong.sql</code> atau <code>sekolah_mysql.sql</code> sudah di-import.</li>'
-            . '<li>Server MySQL/MariaDB sedang berjalan.</li></ol>'
+            . '<li>Server MySQL/MariaDB sedang berjalan (di XAMPP: klik <b>Start</b> pada modul MySQL).</li></ol>'
+            . ($local ? '<p><a href="setup.php" style="display:inline-block;background:#2563eb;color:#fff;padding:8px 14px;'
+                . 'border-radius:8px;text-decoration:none">Buka halaman instalasi</a></p>' : '')
             . '<p style="color:#64748b;font-size:14px;margin-bottom:0">Detail kesalahan dicatat di log error server.</p></div></body></html>');
     }
 

@@ -134,6 +134,18 @@ check($code === 403 || $code === 404, "siswa1 tidak boleh melihat kwitansi siswa
 [$code, , $final] = req('GET', "$base?r=admin/pengguna");
 check(str_contains($final, 'r=login'), 'tamu dialihkan ke login');
 
+echo "• Halaman instalasi (setup.php)\n";
+[$code, $body] = req('GET', "http://127.0.0.1:$port/setup.php");
+if ($driver === 'mysql') {
+    check($code === 200 && str_contains($body, 'Sudah terpasang') && !str_contains($body, 'name="mode"'),
+        'setup.php: database terpasang -> formulir instalasi tidak ditampilkan');
+    preg_match('/name="_csrf" value="([a-f0-9]+)"/', $body, $m);
+    [, $body] = req('POST', "http://127.0.0.1:$port/setup.php", ['_csrf' => $m[1] ?? '', 'mode' => 'demo']);
+    check(str_contains($body, 'sudah terpasang sebelumnya'), 'setup.php: memasang ulang di atas database yang ada ditolak');
+} else {
+    check($code === 200 && str_contains($body, 'Untuk SQLite'), 'setup.php: memberi petunjuk untuk driver SQLite');
+}
+
 echo "• CSRF\n";
 [$code] = req('POST', "$base?r=pengumuman/form", ['title' => 'x', 'body' => 'y', 'audience' => 'semua'], $jars['admin']);
 check($code === 419, "POST tanpa token CSRF ditolak (dapat $code)");
